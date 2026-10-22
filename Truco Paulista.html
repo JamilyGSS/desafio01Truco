@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Truco Paulista</title>
+<style>
+:root{--bg:#f4f1ea;--fg:#1d2a24;--panel:#fff;--bd:#d8d2c4;--mut:#6b6f68;--accent:#b3261e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15191a;--fg:#ecebe4;--panel:#20262a;--bd:#38413f;--mut:#9aa39c}}
+:root[data-theme="dark"]{--bg:#15191a;--fg:#ecebe4;--panel:#20262a;--bd:#38413f;--mut:#9aa39c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:12px}
+h1{margin:.2em 0}h2{font-size:16px;margin:12px 0 6px}
+.mut{color:var(--mut)}
+.panel,.tm{background:var(--panel);border:1px solid var(--bd);border-radius:12px}
+.panel{padding:14px}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+label{display:flex;flex-direction:column;font-size:13px;color:var(--mut);gap:3px}
+input,select{padding:8px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--fg);font:inherit;width:100%}
+button{padding:9px 13px;border-radius:9px;border:1px solid var(--bd);background:var(--panel);color:var(--fg);font:inherit;cursor:pointer}
+button.pri{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.err{color:var(--accent);min-height:1.3em;margin-top:8px}
+.sb{display:grid;grid-template-columns:1fr auto 1fr;gap:8px}
+.tm{padding:8px 12px;position:relative;overflow:hidden}
+.tm small{color:var(--mut);display:block}.tm b{font-size:13px}
+.tm em{font-style:normal;font-size:30px;font-weight:700;display:block;line-height:1.1}
+.bar{position:absolute;left:0;bottom:0;height:4px;background:var(--accent)}
+.mid{text-align:center;padding:2px 8px}.mid b{font-size:28px;display:block;line-height:1.1}.mid small{display:block;color:var(--mut)}
+.felt{margin:10px 0;background:radial-gradient(#2a8558,#1a5c3b);border-radius:18px;padding:10px;display:grid;grid-template-columns:76px 1fr 76px;grid-template-rows:auto 190px auto;gap:6px;color:#fff;min-height:330px}
+.vi{grid-column:1;grid-row:1;font-size:11px;text-align:center}
+.seat{text-align:center;font-size:12px}
+.s2{grid-column:2;grid-row:1}.s1{grid-column:1;grid-row:2;align-self:center}.s3{grid-column:3;grid-row:2;align-self:center}.s0{grid-column:2;grid-row:3}
+.nm{display:inline-block;padding:2px 8px;border-radius:12px;background:rgba(0,0,0,.35);max-width:100%;overflow-wrap:anywhere}
+.nm.turn{background:#f5c542;color:#222;font-weight:700}
+.nm u{text-decoration:none;background:#fff;color:#222;border-radius:50%;padding:0 5px;font-size:11px;margin-left:3px}
+.tl{opacity:.75;font-size:11px}
+.bk i{display:inline-block;width:14px;height:20px;border-radius:3px;background:#233b8a;border:1px solid #fff;margin:3px 1px}
+.bub{background:#fff;color:#222;border-radius:10px;padding:2px 8px;margin-top:3px;display:inline-block}
+.cen{grid-column:2;grid-row:2;position:relative}
+.pl{position:absolute}.p0{bottom:0;left:50%;transform:translateX(-50%)}.p2{top:0;left:50%;transform:translateX(-50%)}.p1{left:4%;top:50%;transform:translateY(-50%)}.p3{right:4%;top:50%;transform:translateY(-50%)}
+.say{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:#f5c542;text-shadow:0 2px 6px #000;text-align:center}
+.say small{font-size:12px;color:#fff;font-weight:400}
+.card{width:54px;height:78px;border-radius:7px;background:#fff;color:#111;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #bbb;font-weight:700;line-height:1.1;user-select:none}
+.card b{font-size:20px}.card span{font-size:24px}
+.card.red{color:#c4161c}.card.man{box-shadow:0 0 0 3px #f5c542}
+.card.back{background:repeating-linear-gradient(45deg,#233b8a,#233b8a 5px,#2d4aa8 5px,#2d4aa8 10px);border:2px solid #fff}
+.card.sm{width:40px;height:58px}.card.sm b{font-size:15px}.card.sm span{font-size:17px}
+.cen .card{width:48px;height:70px}
+.hand{display:flex;gap:10px;justify-content:center;margin:8px 0}
+.hand .card{width:72px;height:104px;cursor:pointer;transition:transform .12s}.hand .card:hover{transform:translateY(-8px)}
+.hand .card b{font-size:26px}.hand .card span{font-size:32px}
+.hint{text-align:center;color:var(--mut);min-height:1.4em}
+.ctl,.sigs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0}
+.res{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;padding:8px;background:var(--panel);border:1px solid var(--bd);border-radius:10px}
+.log{font-size:13px;color:var(--mut);background:var(--panel);border:1px solid var(--bd);border-radius:10px;padding:8px 12px;margin-top:8px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:20;padding:16px}
+.md{background:var(--panel);border-radius:14px;padding:18px;max-width:440px;width:100%;max-height:90%;overflow:auto}
+.md h2{margin-top:0}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.cds{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));background:#222;color:#fff;padding:9px 16px;border-radius:20px;opacity:0;transition:opacity .25s;z-index:30;pointer-events:none;max-width:90%;text-align:center}
+</style></head><body>
+<div id="app"></div><div id="toast"></div>
+<script>
+const R=['4','5','6','7','Q','J','K','A','2','3'],SU=['♦','♠','♥','♣'],NX={1:3,3:6,6:9,9:12},LBL={3:'TRUCO',6:'SEIS',9:'NOVE',12:'DOZE'};
+const SIG=[['😉','Tenho manilha'],['😏','Tenho um 3'],['🤐','Cartas fracas'],['😬','Vamos de truco!'],['🙄','Não peça truco']];
+const $=i=>document.getElementById(i);let S=null;
+const red=c=>c.s===0||c.s===2;
+const str=c=>c.r===S.h.man?10+c.s:c.r;
+const tn=t=>t===0?'Sua dupla':'Adversários';
+const pair=t=>t===0?S.names[0]+' & '+S.names[2]:S.names[1]+' & '+S.names[3];
+const log=m=>{S.log.unshift(m);if(S.log.length>40)S.log.length=40};
+function toast(m){const t=$('toast');t.textContent=m;t.style.opacity=1;clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.opacity=0,2800)}
+function later(fn,ms){const g=S.gen;setTimeout(()=>{if(!S||S.gen!==g)return;if(S.offline){S.q=fn;return}fn()},ms)}
+const cardH=(c,o={})=>o.back?`<div class="card back ${o.cls||''}"></div>`:`<div class="card${red(c)?' red':''}${S&&S.h&&c.r===S.h.man?' man':''} ${o.cls||''}" ${o.attr||''}><b>${R[c.r]}</b><span>${SU[c.s]}</span></div>`;
+
+/* UC-001 / UC-002: iniciar partida e formar duplas */
+function setup(){S=null;$('app').innerHTML=`<div class="wrap"><h1>🃏 Truco Paulista</h1><p class="mut">Duas duplas · partida até 12 pontos · você joga contra três jogadores controlados pelo sistema.</p>
+<div class="panel"><h2>Participantes</h2><div class="g4">${['Você','Ana','Beto','Carla'].map((n,i)=>`<label>Jogador ${i+1}${i?'':' (você)'}<input id="n${i}" value="${n}" maxlength="14" oninput="fill()"></label>`).join('')}</div>
+<h2>Duplas</h2><div class="g4"><label>Dupla 1 · integrante 1<select id="d0" onchange="fill(1)"></select></label><label>Dupla 1 · integrante 2<select id="d1" onchange="fill(1)"></select></label><label>Dupla 2 · integrante 1<select id="d2" onchange="fill(1)"></select></label><label>Dupla 2 · integrante 2<select id="d3" onchange="fill(1)"></select></label></div>
+<h2>Opções</h2><label style="flex-direction:row;align-items:center;gap:8px;color:var(--fg)"><input id="sg" type="checkbox" checked style="width:auto"> Habilitar sinais visuais ao parceiro</label>
+<div class="err" id="msg"></div><button class="pri" onclick="startMatch()">Iniciar partida</button></div></div>`;fill()}
+const DEF=[0,2,1,3];
+function fill(){const ns=[0,1,2,3].map(i=>$('n'+i).value.trim());[0,1,2,3].forEach(k=>{const s=$('d'+k),cur=s.dataset.i?s.value:String(DEF[k]);s.innerHTML='<option value="">—</option>'+ns.map((n,i)=>`<option value="${i}">${n||'Jogador '+(i+1)}</option>`).join('');s.value=cur;s.dataset.i=1})}
+function startMatch(){const msg=$('msg');try{
+ const ns=[0,1,2,3].map(i=>$('n'+i).value.trim());
+ if(ns.some(n=>!n)||new Set(ns.map(n=>n.toLowerCase())).size<4){msg.textContent='São necessários quatro jogadores com nomes distintos.';return}
+ const d=[0,1,2,3].map(k=>$('d'+k).value);
+ if(d.some(v=>v==='')){msg.textContent='Dupla incompleta: defina os dois integrantes de cada dupla antes de continuar.';return}
+ if(new Set(d).size<4){msg.textContent='Um mesmo jogador não pode pertencer às duas duplas. Selecione novamente.';return}
+ const A=[+d[0],+d[1]],B=[+d[2],+d[3]],me=A.includes(0)?A:B,ot=me===A?B:A,seat=[0,ot[0],me.find(x=>x!==0),ot[1]];
+ S={names:seat.map(i=>ns[i]),team:[0,1,0,1],score:[0,0],dealer:-1,gen:0,sig:$('sg').checked,log:[],hist:[],offline:false};
+ log(`Partida criada: ${pair(0)} × ${pair(1)}. Placar 0 × 0.`);newHand()
+}catch(e){msg.textContent='Não foi possível iniciar a partida.'}}
+
+/* UC-003, 015, 019: distribuir, vira/manilha, distribuidor e ordem */
+function newHand(){S.gen++;S.dealer=(S.dealer+1)%4;S.cov=false;S.ask=null;S.sigOpen=false;S.sm=null;S.sc=false;
+ const[a,b]=S.score,ferro=a===11&&b===11,onze=!ferro&&(a===11||b===11),dk=[];
+ for(let r=0;r<10;r++)for(let s=0;s<4;s++)dk.push({r,s});
+ for(let i=dk.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[dk[i],dk[j]]=[dk[j],dk[i]]}
+ const hands=[0,1,2,3].map(()=>dk.splice(0,3)),vira=dk.pop();
+ if(hands.some(x=>x.length!==3)||!vira){toast('Não foi possível distribuir as cartas.');return}
+ const f=(S.dealer+1)%4;
+ S.h={hands,vira,man:(vira.r+1)%10,val:ferro?1:onze?3:1,mode:ferro?'ferro':onze?'onze':'normal',rounds:[],table:[],turn:f,pend:null,raiser:null,over:false};
+ log(`— Nova mão — distribuidor: ${S.names[S.dealer]}; começa ${S.names[f]}. Vira ${R[vira.r]}${SU[vira.s]}, manilha ${R[S.h.man]}.`);
+ if(ferro){log('MÃO DE FERRO: cartas no escuro e sem truco. Quem vencer leva a partida.');next();return}
+ if(onze){if(a===11){S.ask='onze';render();return}
+  log('Adversários estão com 11 e analisam a Mão de Onze…');render();
+  later(()=>{const st=S.h.hands[1].concat(S.h.hands[3]).filter(c=>str(c)>=9).length;
+   if(st>=2){log('Adversários aceitaram jogar a Mão de Onze (vale 3).');next()}else endHand(0,1,'Adversários correram da Mão de Onze')},1500);return}
+ next()}
+/* UC-017 */
+function onzeDecide(ok){S.ask=null;if(ok){log('Sua dupla aceitou jogar a Mão de Onze (vale 3).');next()}else endHand(1,1,'Sua dupla correu da Mão de Onze')}
+
+function next(){const h=S.h;render();if(h.over||h.pend||S.ask)return;if(h.turn!==0)later(botTurn,900)}
+
+/* UC-005 / UC-016: jogar carta (aberta ou coberta) */
+function clickCard(i){const h=S.h;if(h.over||S.ask||S.over)return;
+ if(h.pend)return toast('Responda ao pedido de aumento primeiro.');
+ if(h.turn!==0||h.table.length>=4)return toast('Jogada inválida: ainda não é a sua vez.');
+ if(!h.hands[0][i])return toast('Essa carta não está disponível.');
+ const cov=h.mode==='ferro'?false:S.cov;S.cov=false;play(0,i,cov)}
+function toggleCov(){const h=S.h;if(h.over)return;
+ if(h.mode==='ferro')return toast('Na Mão de Ferro todas as cartas são jogadas no escuro.');
+ if(h.rounds.length<1)return toast('Carta coberta não está disponível na 1ª rodada.');S.cov=!S.cov;render()}
+function play(s,i,cov){const h=S.h,c=h.hands[s].splice(i,1)[0];h.table.push({seat:s,c,cov:!!cov});
+ log(`${S.names[s]} jogou ${cov?'uma carta coberta':R[c.r]+SU[c.s]}.`);h.turn=(s+1)%4;
+ if(h.table.length===4){render();later(roundEnd,1100)}else next()}
+
+/* UC-010 / UC-011: vencedor da rodada e da mão */
+function decide(rs){const a=rs[0],b=rs[1];
+ if(rs.length>=2){if(a!=='T'&&b!=='T'&&a===b)return a;if(a==='T'&&b!=='T')return b;if(a!=='T'&&b==='T')return a}
+ if(rs.length===3){const c=rs[2];if(c!=='T')return c;if(a!=='T')return a;return 'D'}return null}
+function roundEnd(){const h=S.h,ev=h.table.map(e=>({...e,v:e.cov?-1:str(e.c)})),mx=Math.max(...ev.map(e=>e.v)),tops=ev.filter(e=>e.v===mx),ts=new Set(tops.map(e=>S.team[e.seat]));
+ let res;if(ts.size===1){res=[...ts][0];h.turn=tops[0].seat}else{res='T';h.turn=h.table[0].seat}
+ h.rounds.push(res);log(`Rodada ${h.rounds.length}: ${res==='T'?'empatou (embucha)':tn(res)+' venceu'}.`);
+ const w=decide(h.rounds);if(w===null){h.table=[];S.cov=false;next();return}
+ if(w==='D')endHand('D',0,'Todas as rodadas empataram');else endHand(w,h.val,tn(w)+' venceu a mão')}
+
+/* UC-012 / UC-014: pontuação e fim de partida */
+function endHand(w,pts,why){const h=S.h;h.over=true;h.pend=null;
+ if(w==='D')S.res=why+': ninguém pontua.';else{S.score[w]+=pts;S.res=`${why} — ${tn(w)} +${pts}`}
+ log(S.res);S.hist.push(w==='D'?'Empate':`${tn(w)} +${pts}`);
+ if(S.score.some(x=>x>=12)){S.over=true;S.winner=S.score[0]>=12?0:1;log(`Fim de partida! ${pair(S.winner)} venceu.`)}
+ render()}
+
+/* UC-006 / 007 / 008 / 009: truco e aumentos */
+function askTruco(){const h=S.h;if(h.over||S.over)return;
+ if(h.mode!=='normal')return toast('Pedido não permitido na '+(h.mode==='ferro'?'Mão de Ferro.':'Mão de Onze.'));
+ if(h.pend)return toast('Já existe um pedido pendente.');
+ if(h.turn!==0)return toast('Você só pode pedir truco na sua vez.');
+ if(h.val>=12)return toast('Valor máximo atingido: a mão já vale 12.');
+ if(h.raiser===0)return toast('Sequência inválida: o próximo aumento cabe aos adversários.');
+ callTruco(0)}
+function callTruco(s){const h=S.h,nv=NX[h.val];h.pend={by:S.team[s],nv};log(`${S.names[s]} pediu ${LBL[nv]}!`);ask()}
+function ask(){render();if(S.h.pend.by===0)later(botResp,1100)}
+function botResp(){const h=S.h,p=h.pend,st=h.hands[1].concat(h.hands[3]).filter(c=>str(c)>=9).length,r=Math.random(),need=p.nv/3;
+ resp(1,(p.nv<12&&st+r>=need+2)?'up':(st+r*1.5>=need)?'ok':'run')}
+function resp(rt,ch){const h=S.h,p=h.pend;if(!p)return toast('Não há pedido válido para responder.');
+ if(ch==='run'){endHand(p.by,h.val,`${tn(rt)} correu do ${LBL[p.nv]}`);return}
+ h.val=p.nv;h.raiser=p.by;
+ if(ch==='up'){h.pend={by:rt,nv:NX[p.nv]};log(`${tn(rt)} aceitou e pediu ${LBL[NX[p.nv]]}!`);ask();return}
+ h.pend=null;log(`${tn(rt)} aceitou: a mão vale ${h.val}.`);next()}
+
+/* jogadores controlados pelo sistema */
+function botTurn(){const h=S.h,s=h.turn;if(h.over||h.pend||s===0)return;const t=S.team[s],hand=h.hands[s];
+ if(h.mode==='normal'&&h.raiser!==t&&h.val<12){const st=hand.filter(c=>str(c)>=9).length;if(Math.random()<(st>=2?.3:st===1?.1:.03)){callTruco(s);return}}
+ let i,cov=false;
+ if(h.mode==='ferro')i=Math.random()*hand.length|0;
+ else{const ev=h.table.map(e=>({t:S.team[e.seat],v:e.cov?-1:str(e.c)})),
+  mine=Math.max(-2,...ev.filter(e=>e.t===t).map(e=>e.v)),opp=Math.max(-2,...ev.filter(e=>e.t!==t).map(e=>e.v)),
+  ord=hand.map((c,k)=>k).sort((a,b)=>str(hand[a])-str(hand[b]));
+  if(!ev.length)i=ord[Math.min(ord.length-1,ord.length/2|0)];
+  else if(mine>opp)i=ord[0];
+  else{const w=ord.find(k=>str(hand[k])>opp);if(w!==undefined)i=w;else{i=ord[0];cov=h.rounds.length>=1&&Math.random()<.6}}}
+ play(s,i,cov)}
+
+/* UC-020: sinais */
+function sendSig(i){if(!S.sig)return toast('Sinal indisponível: a função está desabilitada nesta partida.');
+ S.sm=SIG[i];S.sigOpen=false;log(`Você enviou ${SIG[i][0]} (${SIG[i][1]}) ao parceiro.`);render();toast('Sinal enviado ao parceiro.');
+ const g=S.gen;setTimeout(()=>{if(S&&S.gen===g){S.sm=null;render()}},3500)}
+/* UC-021: reconexão */
+function goOffline(){if(S.over)return toast('A partida já foi encerrada.');S.offline=true;render()}
+function reconnect(){const v=$('rid').value.trim().toLowerCase(),e=$('rerr');
+ if(S.over){e.textContent='A partida não está mais ativa.';return}
+ if(!v||v!==S.names[0].toLowerCase()){e.textContent='Identificação inválida. Informe o nome do jogador desconectado.';return}
+ S.offline=false;const q=S.q;S.q=null;render();
+ toast(S.h.turn===0&&!S.h.pend&&!S.h.over?'Reconectado. É a sua vez.':'Reconectado. Acompanhe até a sua vez.');if(q)q()}
+
+/* UC-004, 013: visualização das cartas e placar */
+function render(){if(!S||!S.h)return;const h=S.h;
+ const tm=t=>`<div class="tm"><small>${t?'Dupla adversária':'Sua dupla'}</small><b>${pair(t)}</b><em>${S.score[t]}<span class="mut" style="font-size:13px;font-weight:400"> / 12</span></em><div class="bar" style="width:${Math.min(100,S.score[t]/12*100)}%"></div></div>`;
+ const dots=h.rounds.map(r=>r==='T'?'⚪':r===0?'🟢':'🔴').join('')||'—';
+ const chip=h.mode==='ferro'?'Mão de Ferro':h.mode==='onze'?'Mão de Onze':'';
+ const seat=s=>`<div class="seat s${s}"><span class="nm${h.turn===s&&!h.over&&!S.over?' turn':''}">${S.names[s]}${S.dealer===s?'<u>D</u>':''}</span>${s?`<div class="bk">${h.hands[s].map(()=>'<i></i>').join('')}</div>`:''}${s===2&&S.sm?`<div class="bub">${S.sm[0]} ${S.sm[1]}</div>`:''}<div class="tl">${tn(S.team[s])}</div></div>`;
+ const cen=h.table.map(t=>`<div class="pl p${t.seat}">${t.cov?cardH(0,{back:1}):cardH(t.c)}</div>`).join('')+(h.pend?`<div class="say">${LBL[h.pend.nv]}!<small>${tn(h.pend.by)} pede — aguardando resposta</small></div>`:'');
+ const hand=h.hands[0].map((c,i)=>h.mode==='ferro'?`<div class="card back" onclick="clickCard(${i})"></div>`:cardH(c,{attr:`onclick="clickCard(${i})"`})).join('');
+ const hint=h.over||S.over?'':h.turn===0?'Sua vez — escolha uma carta'+(S.cov?' (será jogada coberta)':'')+(h.mode==='ferro'?' às cegas':''):'Vez de '+S.names[h.turn];
+ const tl=h.mode!=='normal'?'Truco bloqueado':h.val>=12?'Valor máximo (12)':'Pedir '+LBL[NX[h.val]];
+ let md='';
+ if(S.offline)md=`<h2>📡 Conexão perdida</h2><p>A partida continua registrada. Identifique-se para voltar.</p><input id="rid" placeholder="Seu nome"><div class="err" id="rerr"></div><div class="row"><button class="pri" onclick="reconnect()">Reconectar</button></div>`;
+ else if(S.over)md=`<h2>🏆 Fim da partida</h2><p><b>${tn(S.winner)}</b> (${pair(S.winner)}) venceu por ${S.score[0]} × ${S.score[1]}.</p><p class="mut">Partida encerrada: novas jogadas estão bloqueadas.</p><div class="row"><button class="pri" onclick="setup()">Nova partida</button></div>`;
+ else if(S.ask==='onze')md=`<h2>Mão de Onze</h2><p>Sua dupla tem 11 pontos e pode ver as cartas um do outro. Jogar vale 3 pontos; correr dá 1 ponto aos adversários.</p><div class="cds"><b>${S.names[0]}:</b>${h.hands[0].map(c=>cardH(c,{cls:'sm'})).join('')}</div><div class="cds"><b>${S.names[2]}:</b>${h.hands[2].map(c=>cardH(c,{cls:'sm'})).join('')}</div><div class="cds mut">Vira: ${cardH(h.vira,{cls:'sm'})}</div><div class="row"><button class="pri" onclick="onzeDecide(true)">Jogar (vale 3)</button><button onclick="onzeDecide(false)">Correr</button></div>`;
+ else if(h.pend&&h.pend.by===1&&!h.over){const p=h.pend;md=`<h2>${LBL[p.nv]}! — ${pair(1)}</h2><p>Se aceitar, a mão passa a valer ${p.nv}. Se correr, os adversários ganham ${h.val}.</p><div class="row"><button class="pri" onclick="resp(0,'ok')">Aceitar</button><button onclick="resp(0,'run')">Correr</button>${NX[p.nv]?`<button onclick="resp(0,'up')">Aumentar: ${LBL[NX[p.nv]]}</button>`:''}</div>`}
+ else if(S.sc)md=`<h2>Placar</h2><p><b>${pair(0)}</b>: ${S.score[0]} pontos<br><b>${pair(1)}</b>: ${S.score[1]} pontos</p><p class="mut">Mãos: ${S.hist.join(' · ')||'nenhuma concluída'}</p><div class="row"><button onclick="S.sc=false;render()">Fechar</button></div>`;
+ $('app').innerHTML=`<div class="wrap"><div class="sb">${tm(0)}<div class="mid"><small>Mão vale</small><b>${h.val}</b><small>${chip}</small><div>${dots}</div></div>${tm(1)}</div>
+<div class="felt"><div class="vi">Vira<br>${cardH(h.vira,{cls:'sm'})}<br>Manilha ${R[h.manilha||h.man]}<br>♦&lt;♠&lt;♥&lt;♣</div>${seat(2)}${seat(1)}<div class="cen">${cen}</div>${seat(3)}${seat(0)}</div>
+${h.over&&!S.over?`<div class="res"><span>${S.res}</span><button class="pri" onclick="newHand()">Próxima mão</button></div>`:''}
+<div class="hint">${hint}</div><div class="hand">${hand}</div>
+${S.sigOpen?`<div class="sigs">${SIG.map((s,i)=>`<button onclick="sendSig(${i})">${s[0]} ${s[1]}</button>`).join('')}</div>`:''}
+<div class="ctl"><button onclick="toggleCov()">${S.cov?'☑':'☐'} Jogar coberta</button><button class="pri" onclick="askTruco()">${tl}</button><button onclick="S.sigOpen=!S.sigOpen;render()">😉 Sinais</button><button onclick="S.sc=true;render()">Placar</button><button onclick="goOffline()">📡 Simular queda</button></div>
+<div class="log">${S.log.slice(0,6).map(l=>`<div>${l}</div>`).join('')}</div></div>${md?`<div class="ov"><div class="md">${md}</div></div>`:''}`}
+setup();
+</script></body></html>
