@@ -7,6 +7,10 @@ Projeto de desenvolvimento de um sistema de Truco Paulista para duas duplas, com
 - Especificação de todos os casos de uso do sistema.
 - Desenvolvimento da camada gráfica para interação dos jogadores com o jogo.
 
+## Interface gráfica
+
+A interface gráfica foi desenvolvida em HTML e está disponível neste repositório.
+
 ## Integrantes
 
 - Giovana Ferreira Waterkemper- ra143844
